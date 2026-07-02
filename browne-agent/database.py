@@ -38,6 +38,7 @@ def upsert_chat_lead(session_id, fields, source_page=None):
     """Insert or update the kind='chat' lead for this session."""
     name = fields.get('name')
     email = fields.get('email')
+    phone = fields.get('phone')
     company = fields.get('company')
     message = fields.get('interest') or fields.get('notes')
     try:
@@ -52,9 +53,9 @@ def upsert_chat_lead(session_id, fields, source_page=None):
             cur.execute(
                 'UPDATE leads_lead SET '
                 'name=COALESCE(?, name), email=COALESCE(?, email), '
-                'company=COALESCE(?, company), message=COALESCE(?, message) '
-                'WHERE id=?',
-                (name, email, company, message, row[0]),
+                'phone=COALESCE(?, phone), company=COALESCE(?, company), '
+                'message=COALESCE(?, message) WHERE id=?',
+                (name, email, phone, company, message, row[0]),
             )
         else:
             cur.execute(
@@ -64,9 +65,9 @@ def upsert_chat_lead(session_id, fields, source_page=None):
                 'estimated_annual_volume, delivery_timeline, target_price, '
                 'quality_requirements, application, message, extra, source_page, '
                 'session_id, ip) '
-                "VALUES ('chat', ?, ?, ?, NULL, ?, NULL, NULL, NULL, NULL, NULL, "
+                "VALUES ('chat', ?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, "
                 "'[]', NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, ?, NULL)",
-                (_now(), name, email, company, message,
+                (_now(), name, email, phone, company, message,
                  json.dumps(fields), source_page, session_id),
             )
         conn.commit()

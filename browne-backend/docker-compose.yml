@@ -29,6 +29,8 @@ services:
     environment:
       AGENT_PORT: "5031"
       DB_PATH: /data/browne.sqlite3
+    volumes:
+      - ./data:/data
     depends_on:
       - backend
     restart: unless-stopped
