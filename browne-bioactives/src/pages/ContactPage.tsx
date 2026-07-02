@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, Building } from 'lucide-react';
 import { useDivision } from '../data/divisions';
+import { postLead } from '../api/client';
 
 interface ContactForm {
   name: string;
@@ -27,11 +28,13 @@ const ContactPage = () => {
   } = useForm<ContactForm>();
 
   const onSubmit = async (data: ContactForm) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('Contact form submitted:', data);
-    setIsSubmitted(true);
-    reset();
+    try {
+      await postLead('contact', data as unknown as Record<string, unknown>);
+      setIsSubmitted(true);
+      reset();
+    } catch {
+      alert('Sorry, something went wrong. Please email info@brownebioactives.com.');
+    }
   };
 
   const contactMethods = [

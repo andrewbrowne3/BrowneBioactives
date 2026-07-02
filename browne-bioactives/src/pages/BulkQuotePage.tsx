@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { ShoppingCart, Building, User, Package, CheckCircle, Clock, DollarSign } from 'lucide-react';
 import { useDivision, productsFor } from '../data/divisions';
 import type { BulkQuoteRequest } from '../types';
+import { postLead } from '../api/client';
 
 const BulkQuotePage = () => {
   const location = useLocation();
@@ -25,10 +26,12 @@ const BulkQuotePage = () => {
 
 
   const onSubmit = async (data: BulkQuoteRequest) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('Bulk quote request submitted:', data);
-    setIsSubmitted(true);
+    try {
+      await postLead('bulk_quote', data as unknown as Record<string, unknown>);
+      setIsSubmitted(true);
+    } catch {
+      alert('Sorry, something went wrong. Please email info@brownebioactives.com.');
+    }
   };
 
   if (isSubmitted) {

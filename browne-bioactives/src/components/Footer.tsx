@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Linkedin } from 'lucide-react';
+import { Mail, MapPin, Linkedin } from 'lucide-react';
 import { useDivision } from '../data/divisions';
 
 const Footer = () => {
@@ -74,19 +74,13 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-primary-400" />
-                <span className="text-gray-300">info@brownebioactives.com</span>
+                <a href="mailto:info@brownebioactives.com" className="text-gray-300 hover:text-white">
+                  info@brownebioactives.com
+                </a>
               </li>
               <li className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-primary-400" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-start space-x-3">
-                <MapPin className="h-5 w-5 text-primary-400 mt-1" />
-                <span className="text-gray-300">
-                  Research Park<br />
-                  Innovation District<br />
-                  Boston, MA 02134
-                </span>
+                <MapPin className="h-5 w-5 text-primary-400" />
+                <span className="text-gray-300">Made in the USA</span>
               </li>
             </ul>
           </div>

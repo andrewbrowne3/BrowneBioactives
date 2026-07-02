@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: .
+    image: browne-backend
+    network_mode: host
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: "False"
+      DB_PATH: /data/browne.sqlite3
+      STATIC_ROOT: /app/staticfiles
+      GEOIP_DB: /data/geoip/GeoLite2-City.mmdb
+      PORT: "5030"
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      LEAD_NOTIFY_EMAIL: ${LEAD_NOTIFY_EMAIL}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM: ${SMTP_FROM}
+    volumes:
+      - ./data:/data
+      - /home/ab/GeoLite2-City_20250103:/data/geoip:ro
+    restart: unless-stopped
+
+  agent:
+    build:
+      context: ../browne-agent
+    image: browne-agent
+    network_mode: host
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      BROWNE_MODEL: ${BROWNE_MODEL:-claude-haiku-4-5}
+      AGENT_PORT: "5031"
+      DB_PATH: /data/browne.sqlite3
+    volumes:
+      - ./data:/data
+    depends_on:
+      - backend
+    restart: unless-stopped

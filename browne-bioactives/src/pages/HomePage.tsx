@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Award, Microscope, Users, ChevronRight, Beaker, CheckCircle } from 'lucide-react';
 import { useDivision, productsFor } from '../data/divisions';
+import QuickInquiry from '../components/QuickInquiry';
 
 const statIcons = [Shield, Award, Microscope, Users];
 
@@ -158,6 +159,9 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Quick inquiry - easy lead capture (cosmetics) */}
+      {division.id === 'cosmetics' && <QuickInquiry />}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700">

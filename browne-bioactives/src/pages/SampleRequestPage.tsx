@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Package, Building, User, CheckCircle } from 'lucide-react';
 import { useDivision, productsFor } from '../data/divisions';
 import type { SampleRequest } from '../types';
+import { postLead } from '../api/client';
 
 const SampleRequestPage = () => {
   const location = useLocation();
@@ -25,10 +26,12 @@ const SampleRequestPage = () => {
 
 
   const onSubmit = async (data: SampleRequest) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('Sample request submitted:', data);
-    setIsSubmitted(true);
+    try {
+      await postLead('sample', data as unknown as Record<string, unknown>);
+      setIsSubmitted(true);
+    } catch {
+      alert('Sorry, something went wrong. Please email info@brownebioactives.com.');
+    }
   };
 
   if (isSubmitted) {

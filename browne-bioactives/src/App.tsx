@@ -2,6 +2,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import RuoBanner from './components/RuoBanner';
+import ChatWidget from './components/ChatWidget';
+import StickyCTA from './components/StickyCTA';
+import { usePageTracker } from './hooks/usePageTracker';
+import { useDivision } from './data/divisions';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
@@ -13,6 +17,9 @@ import ContactPage from './pages/ContactPage';
 
 // Shared chrome for both division "sites" (cosmetics + research).
 function DivisionLayout() {
+  usePageTracker(); // visitor beacon on every page (site-wide)
+  const { id } = useDivision();
+  const isCosmetics = id === 'cosmetics';
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -21,6 +28,9 @@ function DivisionLayout() {
         <Outlet />
       </main>
       <Footer />
+      {/* Chat + sample CTA only on the cosmetics site for now */}
+      {isCosmetics && <ChatWidget />}
+      {isCosmetics && <StickyCTA />}
     </div>
   );
 }
