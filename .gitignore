@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Django
+browne-backend/staticfiles/
+*.sqlite3
+*.sqlite3-journal
+
+# Runtime data / DB volume
+data/
+**/data/
+
+# Secrets & env
+.env
+.env.*
+!.env.example
+
+# GeoIP databases (large, licensed)
+*.mmdb
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude
+.claude/
