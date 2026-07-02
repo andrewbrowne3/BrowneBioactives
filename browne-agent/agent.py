@@ -30,7 +30,8 @@ async def respond(session_id, history, page):
 
         if not tool_uses:
             return ' '.join(t.strip() for t in text_parts if t.strip()).strip() \
-                or "Thanks for reaching out! How can I help with your formulation?"
+                or ("Happy to help! Want me to have our team send you a free GHK-Cu sample and a "
+                    "quote? What's the best email to reach you at?")
 
         # Execute the capture_lead tool(s), feed results back, loop for the final text
         messages.append({'role': 'assistant', 'content': resp.content})
@@ -52,4 +53,5 @@ async def respond(session_id, history, page):
                 })
         messages.append({'role': 'user', 'content': results})
 
-    return "Thanks! I've noted that down and the team will follow up soon."
+    return ("Thanks! I've noted that down and the team will follow up soon. What's the best "
+            "email for them to reach you at?")

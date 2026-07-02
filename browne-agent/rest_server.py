@@ -17,9 +17,9 @@ app.add_middleware(
     CORSMiddleware, allow_origins=['*'], allow_methods=['*'], allow_headers=['*'],
 )
 
-GREETING = ("Hi! I'm the BrowneBioactives assistant. Ask me about our US-made peptides and "
-            "cosmetic actives (GHK-Cu, Matrixyl, hyaluronic acid, and more), or tell me what "
-            "you're formulating and I'll point you to the right ingredient and samples.")
+GREETING = ("Hey, thanks for stopping by BrowneBioactives! We make Copper Tripeptide (GHK-Cu) "
+            "right here in the USA. What are you formulating? I'd love to get a free sample and "
+            "a quote sent your way.")
 
 
 @app.get('/health')
