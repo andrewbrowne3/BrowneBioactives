@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Award, Microscope, Users, ChevronRight, Beaker, CheckCircle } from 'lucide-react';
 import { useDivision, productsFor } from '../data/divisions';
 import QuickInquiry from '../components/QuickInquiry';
+import MoleculeAnimation from '../components/MoleculeAnimation';
 
 const statIcons = [Shield, Award, Microscope, Users];
 
@@ -14,8 +15,11 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-50 to-white py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 to-white py-20 lg:py-32">
+        {division.id === 'cosmetics' && (
+          <MoleculeAnimation className="pointer-events-none absolute inset-y-0 right-0 h-full w-[110%] sm:w-3/4 lg:w-1/2 opacity-[0.18] lg:opacity-25" />
+        )}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
