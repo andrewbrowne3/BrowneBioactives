@@ -53,7 +53,7 @@ const ProductsPage = () => {
           <p className="text-xl text-gray-600">
             {division.id === 'research'
               ? 'Validated antibodies, recombinant proteins, and assay kits - For Research Use Only'
-              : 'Premium active ingredients for cosmetic, pharmaceutical, and nutraceutical applications'}
+              : 'Premium active ingredients, made in the USA'}
           </p>
         </div>
       </section>
@@ -155,9 +155,11 @@ const ProductsPage = () => {
                 {filteredProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
                     className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
                   >
                     <div className="p-6">
@@ -165,30 +167,34 @@ const ProductsPage = () => {
                         <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold capitalize">
                           {product.category.replace('-', ' ')}
                         </span>
-                        <span className="text-xs text-gray-500">{division.labels.casShort}: {product.casNumber}</span>
+                        {division.id === 'research' && (
+                          <span className="text-xs text-gray-500">{division.labels.casShort}: {product.casNumber}</span>
+                        )}
                       </div>
 
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-                      <p className="text-sm text-gray-600 mb-1">{product.chemicalName}</p>
-                      <p className="text-sm font-mono text-primary-600 mb-4">{division.labels.formula}: {product.formula}</p>
+                      {division.id === 'cosmetics' && product.inci ? (
+                        <p className="text-sm font-medium text-primary-600 mb-4">INCI: {product.inci}</p>
+                      ) : (
+                        <>
+                          <p className="text-sm text-gray-600 mb-1">{product.chemicalName}</p>
+                          <p className="text-sm font-mono text-primary-600 mb-4">{division.labels.formula}: {product.formula}</p>
+                        </>
+                      )}
 
                       <p className="text-gray-700 mb-4 line-clamp-2">{product.description}</p>
 
-                      <div className="mb-4">
-                        <p className="text-sm font-semibold text-gray-900 mb-2">Specifications:</p>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                          <li>Purity: {product.specifications.purity}</li>
-                          <li>Appearance: {product.specifications.appearance}</li>
-                        </ul>
-                      </div>
+                      {division.id === 'research' && (
+                        <div className="mb-4">
+                          <p className="text-sm font-semibold text-gray-900 mb-2">Specifications:</p>
+                          <ul className="text-sm text-gray-600 space-y-1">
+                            <li>Purity: {product.specifications.purity}</li>
+                            <li>Appearance: {product.specifications.appearance}</li>
+                          </ul>
+                        </div>
+                      )}
 
                       <div className="border-t pt-4">
-                        <div className="flex justify-between items-center mb-3">
-                          <span className="text-sm text-gray-500">{division.labels.minOrder}: {product.minOrderQuantity}</span>
-                          <span className="text-sm font-semibold text-primary-600">
-                            {product.bulkPricing[0].priceRange}
-                          </span>
-                        </div>
                         <Link
                           to={`${base}/products/${product.id}`}
                           className="w-full inline-flex items-center justify-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"

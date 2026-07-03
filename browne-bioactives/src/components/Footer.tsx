@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Linkedin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 import { useDivision } from '../data/divisions';
 
 const Footer = () => {
@@ -22,18 +22,8 @@ const Footer = () => {
             <p className="text-gray-300 mb-4">
               {division.id === 'research'
                 ? 'Research-grade antibodies, recombinant proteins, and assay kits for life-science laboratories. Founded by Dr. Andrew Browne, supplied with lot-specific datasheets and certificates of analysis.'
-                : 'Leading supplier of high-quality active ingredients for cosmetic, pharmaceutical, and nutraceutical applications. Founded by Dr. Andrew Browne, we specialize in innovative bioactive compounds.'}
+                : 'High-purity active ingredients for cosmetic and pharmaceutical formulations, made in the USA. Founded by Dr. Andrew Browne.'}
             </p>
-            <div className="flex space-x-4">
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary-400 transition-colors"
-              >
-                <Linkedin className="h-6 w-6" />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -51,8 +41,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to={`${base}/bulk-quote`} className="text-gray-300 hover:text-primary-400 transition-colors">
-                  {division.id === 'research' ? 'Bulk Quote' : 'Bulk Orders'}
+                <Link to={`${base}/meeting-request`} className="text-gray-300 hover:text-primary-400 transition-colors">
+                  Request a Meeting
                 </Link>
               </li>
               <li>
@@ -74,8 +64,8 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-primary-400" />
-                <a href="mailto:info@brownebioactives.com" className="text-gray-300 hover:text-white">
-                  info@brownebioactives.com
+                <a href="mailto:abrowne@brownebioactives.com" className="text-gray-300 hover:text-white">
+                  abrowne@brownebioactives.com
                 </a>
               </li>
               <li className="flex items-center space-x-3">

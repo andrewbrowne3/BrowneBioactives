@@ -5,6 +5,7 @@ export interface Product {
   division: DivisionId;
   name: string;
   chemicalName: string;
+  inci?: string;      // INCI name (shown publicly on cosmetics products)
   formula: string;
   casNumber: string;
   category: string;

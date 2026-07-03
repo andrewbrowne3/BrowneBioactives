@@ -22,7 +22,7 @@ export default function QuickInquiry() {
       setSent(true);
       reset();
     } catch {
-      setError('Something went wrong. Please email info@brownebioactives.com.');
+      setError('Something went wrong. Please email abrowne@brownebioactives.com.');
     }
   };
 

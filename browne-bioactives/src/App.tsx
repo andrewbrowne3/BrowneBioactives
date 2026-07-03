@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import RuoBanner from './components/RuoBanner';
-import ChatWidget from './components/ChatWidget';
 import StickyCTA from './components/StickyCTA';
 import { usePageTracker } from './hooks/usePageTracker';
 import { useDivision } from './data/divisions';
@@ -11,7 +10,7 @@ import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import SampleRequestPage from './pages/SampleRequestPage';
-import BulkQuotePage from './pages/BulkQuotePage';
+import MeetingRequestPage from './pages/MeetingRequestPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 
@@ -28,8 +27,7 @@ function DivisionLayout() {
         <Outlet />
       </main>
       <Footer />
-      {/* Chat + sample CTA only on the cosmetics site for now */}
-      {isCosmetics && <ChatWidget />}
+      {/* Floating "Request a Sample" CTA on the cosmetics site */}
       {isCosmetics && <StickyCTA />}
     </div>
   );
@@ -42,7 +40,7 @@ const divisionPages = (
     <Route path="products" element={<ProductsPage />} />
     <Route path="products/:id" element={<ProductDetailPage />} />
     <Route path="sample-request" element={<SampleRequestPage />} />
-    <Route path="bulk-quote" element={<BulkQuotePage />} />
+    <Route path="meeting-request" element={<MeetingRequestPage />} />
     <Route path="about" element={<AboutPage />} />
     <Route path="contact" element={<ContactPage />} />
   </>
@@ -71,7 +69,8 @@ function App() {
         <Route path="/about" element={<Navigate to="/cosmetics/about" replace />} />
         <Route path="/contact" element={<Navigate to="/cosmetics/contact" replace />} />
         <Route path="/sample-request" element={<Navigate to="/cosmetics/sample-request" replace />} />
-        <Route path="/bulk-quote" element={<Navigate to="/cosmetics/bulk-quote" replace />} />
+        <Route path="/bulk-quote" element={<Navigate to="/cosmetics/sample-request" replace />} />
+        <Route path="/meeting-request" element={<Navigate to="/cosmetics/meeting-request" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

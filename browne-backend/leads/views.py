@@ -36,7 +36,7 @@ FIELD_MAP = {
     'interest': 'message',  # QuickInquiry "what are you looking for?"
 }
 
-VALID_KINDS = {'contact', 'sample', 'bulk_quote', 'chat', 'quick'}
+VALID_KINDS = {'contact', 'sample', 'bulk_quote', 'meeting', 'chat', 'quick'}
 
 
 def _client_ip(request):

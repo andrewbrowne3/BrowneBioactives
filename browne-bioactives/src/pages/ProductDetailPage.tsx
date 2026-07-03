@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Download, Beaker, CheckCircle, ShoppingCart, Package } from 'lucide-react';
+import { ArrowLeft, Download, Beaker, CheckCircle, Calendar, Package } from 'lucide-react';
 import { products } from '../data/products';
 import { useDivision } from '../data/divisions';
 
@@ -64,17 +64,20 @@ const ProductDetailPage = () => {
                       {product.category.replace('-', ' ')}
                     </span>
                     <h1 className="text-3xl font-bold text-gray-900 mt-4 mb-2">{product.name}</h1>
-                    <p className="text-lg text-gray-600">{product.chemicalName}</p>
+                    {division.id === 'cosmetics' && product.inci ? (
+                      <p className="text-lg text-primary-600 font-medium">INCI: {product.inci}</p>
+                    ) : (
+                      <p className="text-lg text-gray-600">{product.chemicalName}</p>
+                    )}
                   </div>
                   <Beaker className="h-16 w-16 text-primary-600" />
                 </div>
 
-                {/* Basic Info */}
+                {/* Basic Info — research only (no public specs/CAS/price for cosmetics) */}
+                {division.id === 'research' && (
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                      {division.id === 'research' ? 'Product Information' : 'Chemical Information'}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Product Information</h3>
                     <ul className="space-y-2">
                       <li><span className="font-medium">{division.labels.formula}:</span> <span className="font-mono text-primary-600">{product.formula}</span></li>
                       <li><span className="font-medium">{division.labels.cas}:</span> {product.casNumber}</li>
@@ -82,9 +85,7 @@ const ProductDetailPage = () => {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                      {division.id === 'research' ? 'Format & Storage' : 'Physical Properties'}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Format &amp; Storage</h3>
                     <ul className="space-y-2">
                       <li><span className="font-medium">Purity:</span> {product.specifications.purity}</li>
                       <li><span className="font-medium">Appearance:</span> {product.specifications.appearance}</li>
@@ -92,6 +93,7 @@ const ProductDetailPage = () => {
                     </ul>
                   </div>
                 </div>
+                )}
 
                 {/* Description */}
                 <div className="mb-8">
@@ -125,7 +127,8 @@ const ProductDetailPage = () => {
                   </div>
                 </div>
 
-                {/* Pricing */}
+                {/* Pricing — research catalog only; cosmetics pricing is quoted on request */}
+                {division.id === 'research' && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">{division.labels.pricing}</h3>
                   <div className="overflow-x-auto">
@@ -150,6 +153,7 @@ const ProductDetailPage = () => {
                     {division.labels.minOrder}: <span className="font-semibold">{product.minOrderQuantity}</span>
                   </p>
                 </div>
+                )}
               </div>
             </div>
 
@@ -168,50 +172,40 @@ const ProductDetailPage = () => {
                     Request Sample
                   </Link>
                   <Link
-                    to={`${base}/bulk-quote`}
+                    to={`${base}/meeting-request`}
                     state={{ productId: product.id }}
                     className="w-full inline-flex items-center justify-center px-4 py-3 border-2 border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition-colors font-semibold"
                   >
-                    <ShoppingCart className="h-5 w-5 mr-2" />
-                    Get Bulk Quote
+                    <Calendar className="h-5 w-5 mr-2" />
+                    Request a Meeting
                   </Link>
                 </div>
+                {division.id === 'cosmetics' && (
+                  <p className="text-xs text-gray-500 mt-4">
+                    Pricing and specifications are shared with your sample. Questions? Email{' '}
+                    <a href="mailto:abrowne@brownebioactives.com" className="text-primary-600">
+                      abrowne@brownebioactives.com
+                    </a>.
+                  </p>
+                )}
               </div>
 
-              {/* Documentation */}
+              {/* Documentation — research reagents only */}
+              {division.id === 'research' && (
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Documentation</h3>
                 <div className="space-y-3">
                   <button className="w-full flex items-center justify-between px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">{division.id === 'research' ? 'Datasheet' : 'Technical Data Sheet'}</span>
+                    <span className="text-gray-700">Datasheet</span>
                     <Download className="h-4 w-4 text-gray-500" />
                   </button>
                   <button className="w-full flex items-center justify-between px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                     <span className="text-gray-700">Safety Data Sheet</span>
                     <Download className="h-4 w-4 text-gray-500" />
                   </button>
-                  <button className="w-full flex items-center justify-between px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Certificate of Analysis</span>
-                    <Download className="h-4 w-4 text-gray-500" />
-                  </button>
                 </div>
               </div>
-
-              {/* Contact */}
-              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Need Technical Support?</h3>
-                <p className="text-gray-600 mb-4 text-sm">
-                  Our team of PhD {division.id === 'research' ? 'scientists' : 'chemists'} is here to help with
-                  {division.id === 'research' ? ' assay design and validation questions.' : ' formulation questions and technical guidance.'}
-                </p>
-                <Link
-                  to={`${base}/contact`}
-                  className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold text-sm"
-                >
-                  Contact Technical Team
-                  <ArrowLeft className="h-4 w-4 ml-1 rotate-180" />
-                </Link>
-              </div>
+              )}
             </div>
           </div>
         </motion.div>

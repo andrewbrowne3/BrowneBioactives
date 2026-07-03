@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, Building } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle, MessageSquare, Building, Calendar } from 'lucide-react';
 import { useDivision } from '../data/divisions';
 import { postLead } from '../api/client';
 
@@ -33,7 +33,7 @@ const ContactPage = () => {
       setIsSubmitted(true);
       reset();
     } catch {
-      alert('Sorry, something went wrong. Please email info@brownebioactives.com.');
+      alert('Sorry, something went wrong. Please email abrowne@brownebioactives.com.');
     }
   };
 
@@ -41,29 +41,15 @@ const ContactPage = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      description: 'Get in touch via email',
-      contact: 'info@brownebioactives.com',
-      action: 'mailto:info@brownebioactives.com'
-    },
-    {
-      icon: Phone,
-      title: 'Call Us',
-      description: 'Speak with our team',
-      contact: '+1 (555) 123-4567',
-      action: 'tel:+15551234567'
+      description: 'The fastest way to reach us',
+      contact: 'abrowne@brownebioactives.com',
+      action: 'mailto:abrowne@brownebioactives.com'
     },
     {
       icon: MapPin,
-      title: 'Visit Us',
-      description: 'Our headquarters',
-      contact: 'Research Park, Innovation District, Boston, MA 02134',
-      action: '#'
-    },
-    {
-      icon: Clock,
-      title: 'Business Hours',
-      description: 'Monday - Friday',
-      contact: '9:00 AM - 6:00 PM EST',
+      title: 'Made in the USA',
+      description: 'Manufactured and tested in-house',
+      contact: 'United States',
       action: '#'
     }
   ];
@@ -142,12 +128,12 @@ const ContactPage = () => {
                   </div>
                 </a>
                 <a
-                  href={`${base}/bulk-quote`}
+                  href={`${base}/meeting-request`}
                   className="block p-3 bg-white rounded-lg hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-primary-600 mr-3" />
-                    <span className="font-medium text-gray-900">Get Bulk Pricing</span>
+                    <Calendar className="h-5 w-5 text-primary-600 mr-3" />
+                    <span className="font-medium text-gray-900">Request a Meeting</span>
                   </div>
                 </a>
                 <a
@@ -262,10 +248,8 @@ const ContactPage = () => {
                       <option value="">Select Inquiry Type</option>
                       <option value="product">Product Information</option>
                       <option value="sample">Sample Request</option>
-                      <option value="bulk">Bulk Pricing</option>
-                      <option value="technical">Technical Support</option>
+                      <option value="meeting">Request a Meeting</option>
                       <option value="partnership">Partnership Opportunities</option>
-                      <option value="custom">Custom Synthesis</option>
                       <option value="other">Other</option>
                     </select>
                     {errors.inquiryType && (

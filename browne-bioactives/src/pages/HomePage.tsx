@@ -24,7 +24,9 @@ const HomePage = () => {
             >
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
                 {division.hero.lead}
-                <span className="text-primary-600"> {division.hero.highlight}</span>
+                {division.hero.highlight && (
+                  <span className="text-primary-600"> {division.hero.highlight}</span>
+                )}
               </h1>
               <p className="text-xl text-gray-600 mb-8">{division.hero.subtitle}</p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -66,6 +68,7 @@ const HomePage = () => {
       </section>
 
       {/* Trust Indicators */}
+      {division.stats.length > 0 && (
       <section className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -88,6 +91,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Featured Products */}
       <section className="py-20 bg-white">
@@ -99,7 +103,7 @@ const HomePage = () => {
             <p className="text-xl text-gray-600">
               {division.id === 'research'
                 ? 'Validated antibodies and proteins for your next experiment'
-                : 'Industry-leading active ingredients for your formulations'}
+                : 'Made-in-the-USA active ingredients for your formulations'}
             </p>
           </div>
 
@@ -107,8 +111,10 @@ const HomePage = () => {
             {featuredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                whileHover={{ y: -6 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
               >
@@ -120,7 +126,11 @@ const HomePage = () => {
                     <Beaker className="h-8 w-8 text-primary-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-                  <p className="text-gray-600 mb-4 text-sm">{division.labels.formula}: {product.formula}</p>
+                  {division.id === 'cosmetics' && product.inci ? (
+                    <p className="text-gray-600 mb-4 text-sm">INCI: {product.inci}</p>
+                  ) : (
+                    <p className="text-gray-600 mb-4 text-sm">{division.labels.formula}: {product.formula}</p>
+                  )}
                   <p className="text-gray-700 mb-4 line-clamp-3">{product.description}</p>
                   <div className="mb-4">
                     <p className="text-sm font-semibold text-gray-900 mb-2">Key Applications:</p>
@@ -133,8 +143,7 @@ const HomePage = () => {
                       ))}
                     </ul>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">{division.labels.minOrder}: {product.minOrderQuantity}</span>
+                  <div className="flex justify-end items-center">
                     <Link
                       to={`${base}/products/${product.id}`}
                       className="text-primary-600 hover:text-primary-700 font-semibold text-sm inline-flex items-center"
@@ -170,7 +179,7 @@ const HomePage = () => {
             {division.id === 'research' ? 'Ready to Accelerate Your Research?' : 'Ready to Elevate Your Formulations?'}
           </h2>
           <p className="text-xl text-primary-100 mb-8">
-            Get started with samples and technical support from our expert team.
+            Request a free sample, or set up a quick call with our team.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -181,10 +190,10 @@ const HomePage = () => {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
-              to={`${base}/bulk-quote`}
+              to={`${base}/meeting-request`}
               className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-primary-600 transition-colors font-semibold text-lg"
             >
-              Get Bulk Quote
+              Request a Meeting
             </Link>
           </div>
         </div>

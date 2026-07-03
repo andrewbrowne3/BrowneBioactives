@@ -30,7 +30,7 @@ const SampleRequestPage = () => {
       await postLead('sample', data as unknown as Record<string, unknown>);
       setIsSubmitted(true);
     } catch {
-      alert('Sorry, something went wrong. Please email info@brownebioactives.com.');
+      alert('Sorry, something went wrong. Please email abrowne@brownebioactives.com.');
     }
   };
 
@@ -130,7 +130,6 @@ const SampleRequestPage = () => {
                     <option value="">Select Industry</option>
                     <option value="cosmetics">Cosmetics & Personal Care</option>
                     <option value="pharmaceutical">Pharmaceutical</option>
-                    <option value="nutraceutical">Nutraceutical</option>
                     <option value="industrial">Industrial</option>
                     <option value="research">Research & Development</option>
                     <option value="other">Other</option>

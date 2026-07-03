@@ -9,6 +9,7 @@ class Lead(models.Model):
         ('contact', 'Contact form'),
         ('sample', 'Sample request'),
         ('bulk_quote', 'Bulk quote'),
+        ('meeting', 'Meeting request'),
         ('chat', 'Chatbot'),
         ('quick', 'Quick inquiry'),
     ]

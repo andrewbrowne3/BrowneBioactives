@@ -6,7 +6,7 @@ const BASE = import.meta.env.VITE_API_BASE || '';
 
 export const api = axios.create({ baseURL: BASE });
 
-export type LeadKind = 'contact' | 'sample' | 'bulk_quote' | 'quick';
+export type LeadKind = 'contact' | 'sample' | 'bulk_quote' | 'quick' | 'meeting';
 
 // Submit any inquiry form. Extra props are passed through and stored server-side.
 export async function postLead(kind: LeadKind, data: Record<string, unknown>) {
