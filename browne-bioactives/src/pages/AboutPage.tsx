@@ -49,6 +49,7 @@ const AboutPage = () => {
                   <h3 className="text-2xl font-bold text-gray-900">Dr. Andrew Browne</h3>
                   <p className="text-primary-600 font-semibold">PhD, Chemistry</p>
                   <p className="text-gray-600 mt-2">Founder &amp; Chief Science Officer</p>
+                  <p className="text-gray-500 text-sm mt-3">Research scientist at Georgia Tech</p>
                 </div>
               </div>
             </motion.div>
@@ -85,6 +86,11 @@ const AboutPage = () => {
                   Browne Bioactives is the boring, obvious fix. Make it here. Test it here. Put our
                   name on it and stand behind the lot. No mystery supply chain, no month-long wait,
                   no telephone game between you and the bench that made your material.
+                </p>
+                <p>
+                  I still work as a research scientist at Georgia Tech, so the bar I hold our material
+                  to is the same one I hold my own experiments to. If a lot would not pass on my
+                  bench, it does not ship.
                 </p>
                 <p>{divisionLine}</p>
               </div>
