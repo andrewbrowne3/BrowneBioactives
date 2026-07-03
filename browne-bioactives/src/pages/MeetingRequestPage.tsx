@@ -36,7 +36,7 @@ const MeetingRequestPage = () => {
           className="bg-white rounded-xl shadow-lg p-8 max-w-lg text-center"
         >
           <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Thanks — we’ll be in touch!</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Thanks, we’ll be in touch!</h1>
           <p className="text-gray-600">
             We’ll email you shortly to lock in a time and send a Teams meeting invite.
           </p>

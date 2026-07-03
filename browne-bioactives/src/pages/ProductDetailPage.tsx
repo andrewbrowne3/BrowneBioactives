@@ -73,7 +73,7 @@ const ProductDetailPage = () => {
                   <Beaker className="h-16 w-16 text-primary-600" />
                 </div>
 
-                {/* Basic Info — research only (no public specs/CAS/price for cosmetics) */}
+                {/* Basic Info - research only (no public specs/CAS/price for cosmetics) */}
                 {division.id === 'research' && (
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                   <div>
@@ -127,7 +127,7 @@ const ProductDetailPage = () => {
                   </div>
                 </div>
 
-                {/* Pricing — research catalog only; cosmetics pricing is quoted on request */}
+                {/* Pricing - research catalog only; cosmetics pricing is quoted on request */}
                 {division.id === 'research' && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">{division.labels.pricing}</h3>
@@ -190,7 +190,7 @@ const ProductDetailPage = () => {
                 )}
               </div>
 
-              {/* Documentation — research reagents only */}
+              {/* Documentation - research reagents only */}
               {division.id === 'research' && (
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Documentation</h3>

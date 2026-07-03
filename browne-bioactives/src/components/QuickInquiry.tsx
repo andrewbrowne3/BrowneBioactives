@@ -36,7 +36,7 @@ export default function QuickInquiry() {
           <div className="bg-white rounded-xl p-6 inline-flex items-center gap-3 text-left">
             <CheckCircle className="text-green-600 h-8 w-8 flex-shrink-0" />
             <div>
-              <p className="font-semibold text-gray-900">Got it — thank you!</p>
+              <p className="font-semibold text-gray-900">Got it, thank you!</p>
               <p className="text-gray-600 text-sm">Our team will be in touch shortly.</p>
             </div>
           </div>
