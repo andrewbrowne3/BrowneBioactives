@@ -53,12 +53,24 @@ export default function ChatWidget() {
     connect();
   }, [connect]);
 
-  // Auto-open once, a few seconds after load
+  // Auto-open once, either on exit-intent (cursor leaving toward the tab bar)
+  // or after a longer idle delay. Catches visitors about to bounce without
+  // nagging serious evaluators the moment they land.
   useEffect(() => {
-    const t = setTimeout(() => {
+    const maybeOpen = () => {
       if (!openedOnce.current) openChat();
-    }, 3500);
-    return () => clearTimeout(t);
+    };
+    // Exit-intent: pointer leaves the top of the viewport (toward tabs/back).
+    const onMouseOut = (e: MouseEvent) => {
+      if (!e.relatedTarget && e.clientY <= 0) maybeOpen();
+    };
+    // Idle fallback (also covers touch devices that never fire mouseout).
+    const t = setTimeout(maybeOpen, 25000);
+    document.addEventListener('mouseout', onMouseOut);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('mouseout', onMouseOut);
+    };
   }, [openChat]);
 
   // Keep scrolled to the latest message

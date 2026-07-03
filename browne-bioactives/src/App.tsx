@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import RuoBanner from './components/RuoBanner';
 import StickyCTA from './components/StickyCTA';
+import ChatWidget from './components/ChatWidget';
 import { usePageTracker } from './hooks/usePageTracker';
 import { useDivision } from './data/divisions';
 import LandingPage from './pages/LandingPage';
@@ -27,8 +28,9 @@ function DivisionLayout() {
         <Outlet />
       </main>
       <Footer />
-      {/* Floating "Request a Sample" CTA on the cosmetics site */}
+      {/* Floating "Request a Sample" CTA + lead-capture chat on the cosmetics site */}
       {isCosmetics && <StickyCTA />}
+      {isCosmetics && <ChatWidget />}
     </div>
   );
 }
