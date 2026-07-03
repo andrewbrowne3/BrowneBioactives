@@ -6,6 +6,8 @@ import os
 import sqlite3
 from datetime import datetime, timezone
 
+from notify import notify_chat_lead
+
 DB_PATH = os.environ.get('DB_PATH', '/data/browne.sqlite3')
 
 
@@ -71,6 +73,19 @@ def upsert_chat_lead(session_id, fields, source_page=None):
                  json.dumps(fields), source_page, session_id),
             )
         conn.commit()
+        # Read back the merged row so the alert has the full picture (name +
+        # phone may have arrived in separate capture calls).
+        cur.execute(
+            "SELECT name, email, phone, company, message FROM leads_lead "
+            "WHERE kind='chat' AND session_id=? LIMIT 1",
+            (session_id,),
+        )
+        merged = cur.fetchone()
         conn.close()
+        if merged:
+            notify_chat_lead(
+                dict(zip(('name', 'email', 'phone', 'company', 'message'), merged)),
+                session_id,
+            )
     except Exception as e:
         print(f'[db] upsert_chat_lead failed: {e}', flush=True)

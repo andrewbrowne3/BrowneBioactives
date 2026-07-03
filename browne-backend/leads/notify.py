@@ -9,8 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 def notify_new_lead(lead):
-    recipient = settings.LEAD_NOTIFY_EMAIL
-    if not recipient or not settings.EMAIL_HOST_USER:
+    recipients = [e.strip() for e in
+                  str(settings.LEAD_NOTIFY_EMAIL).replace(';', ',').split(',') if e.strip()]
+    if not recipients or not settings.EMAIL_HOST_USER:
         return  # not configured -> silently skip
 
     subject = f'New {lead.get_kind_display()} lead: {lead.name or lead.email or "Anonymous"}'
@@ -29,6 +30,6 @@ def notify_new_lead(lead):
     ]
     try:
         send_mail(subject, '\n'.join(lines), settings.DEFAULT_FROM_EMAIL,
-                  [recipient], fail_silently=True)
+                  recipients, fail_silently=True)
     except Exception as e:
         logger.warning('Lead notification email failed: %s', e)
