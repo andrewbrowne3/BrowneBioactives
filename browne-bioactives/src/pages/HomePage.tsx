@@ -17,7 +17,7 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 to-white py-20 lg:py-32">
         {division.id === 'cosmetics' && (
-          <MoleculeAnimation className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 h-full w-[130%] sm:w-full lg:w-3/5 opacity-20 lg:opacity-30" />
+          <MoleculeAnimation className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 h-full w-[130%] sm:w-full lg:w-3/5 opacity-25 lg:opacity-40" />
         )}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">

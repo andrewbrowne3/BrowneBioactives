@@ -1,39 +1,54 @@
 import { motion, useReducedMotion } from 'framer-motion';
 
-// Ambient hero decoration: a stylized GHK-Cu (Copper Tripeptide) ball-and-stick
-// that gently breaks apart and reforms on a loop. Pure SVG + framer-motion, no
-// new dependencies. Decorative only (aria-hidden, pointer-events-none).
+// Ambient hero decoration: the actual GHK-Cu (Copper Tripeptide) skeletal
+// structure -- Glycine-Histidine-Lysine with copper coordination. On a loop it
+// splits at the two peptide bonds into its three amino acids plus copper, then
+// reassembles. Pure SVG + framer-motion, no new deps. Decorative (aria-hidden).
 
-const CENTER = { x: 240, y: 200 };
+const BOND = '#0369a1';   // primary-700, skeletal bonds
+const N_COL = '#0284c7';  // primary-600, nitrogen
+const O_COL = '#0ea5e9';  // primary-500, oxygen
+const CU_COL = '#c77b30'; // warm copper accent
 
-// Assembled atom positions. One warm copper "Cu" center coordinated by a
-// peptide-ish cage of blue atoms drawn from the site's primary sky palette.
-const ATOMS = [
-  { x: 240, y: 200, r: 17, color: '#c77b30', glow: true }, // 0  Cu (copper accent)
-  { x: 176, y: 150, r: 12, color: '#0284c7' },             // 1  N
-  { x: 146, y: 212, r: 10, color: '#38bdf8' },             // 2  C
-  { x: 184, y: 268, r: 9,  color: '#7dd3fc' },             // 3  O
-  { x: 304, y: 152, r: 12, color: '#0369a1' },             // 4  N
-  { x: 336, y: 214, r: 10, color: '#38bdf8' },             // 5  C
-  { x: 298, y: 270, r: 9,  color: '#7dd3fc' },             // 6  O
-  { x: 240, y: 116, r: 11, color: '#0ea5e9' },             // 7  C
-  { x: 240, y: 286, r: 12, color: '#0c4a6e' },             // 8  N
-];
+const LOOP = { duration: 6, repeat: Infinity, ease: 'easeInOut' as const, times: [0, 0.5, 1] };
 
-const BONDS: [number, number][] = [
-  [0, 1], [0, 4], [0, 7], [0, 8], // copper coordination
-  [1, 2], [2, 3],                 // left residue chain
-  [4, 5], [5, 6],                 // right residue chain
-  [7, 1], [7, 4],                 // top carbon bridges
-  [8, 3], [8, 6],                 // bottom nitrogen bridges
-];
+interface LineProps {
+  x1: number; y1: number; x2: number; y2: number; double?: boolean;
+}
 
-// How far each atom drifts outward from the center at the "broken apart" peak.
-const DRIFT = 0.55;
-const drifted = (x: number, y: number) => ({
-  x: x + (x - CENTER.x) * DRIFT,
-  y: y + (y - CENTER.y) * DRIFT,
-});
+// A skeletal bond; `double` draws a parallel second stroke (C=O, aromatic).
+function Bond({ x1, y1, x2, y2, double }: LineProps) {
+  if (!double) {
+    return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={BOND} strokeWidth={2.4} strokeLinecap="round" />;
+  }
+  const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1;
+  const ox = (-dy / L) * 3.2, oy = (dx / L) * 3.2;
+  // shorten the inner line slightly, as skeletal drawings do
+  const sx1 = x1 + dx * 0.14, sy1 = y1 + dy * 0.14;
+  const sx2 = x2 - dx * 0.14, sy2 = y2 - dy * 0.14;
+  return (
+    <g stroke={BOND} strokeWidth={2.4} strokeLinecap="round">
+      <line x1={x1 + ox} y1={y1 + oy} x2={x2 + ox} y2={y2 + oy} />
+      <line x1={sx1 - ox} y1={sy1 - oy} x2={sx2 - ox} y2={sy2 - oy} />
+    </g>
+  );
+}
+
+function Atom({ x, y, label, fill }: { x: number; y: number; label: string; fill: string }) {
+  return (
+    <text
+      x={x}
+      y={y}
+      fill={fill}
+      fontSize={15}
+      fontWeight={700}
+      textAnchor="middle"
+      dominantBaseline="central"
+    >
+      {label}
+    </text>
+  );
+}
 
 interface Props {
   className?: string;
@@ -42,84 +57,95 @@ interface Props {
 export default function MoleculeAnimation({ className }: Props) {
   const reduce = useReducedMotion();
 
+  // Break-apart drift per fragment (translate at the loop's midpoint).
+  const drift = (dx: number, dy: number, delay = 0) =>
+    reduce
+      ? undefined
+      : { animate: { x: [0, dx, 0], y: [0, dy, 0] }, transition: { ...LOOP, delay } };
+
+  const fade = reduce
+    ? { opacity: 0.9 }
+    : { animate: { opacity: [0.9, 0, 0.9] }, transition: LOOP };
+
   return (
     <svg
       className={className}
-      viewBox="0 0 480 400"
+      viewBox="0 0 400 360"
       preserveAspectRatio="xMidYMid meet"
       aria-hidden="true"
       focusable="false"
     >
-      <defs>
-        <filter id="mol-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="6" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      {/* Subtle whole-molecule breathing/drift for a touch of life */}
+      {/* ---- Bonds broken during the split (peptide + copper coordination) ---- */}
+      {/* Peptide bond Gly C=O -> His N */}
+      <motion.line
+        x1={130} y1={175} x2={160} y2={205} stroke={BOND} strokeWidth={2.4} strokeLinecap="round"
+        initial={false} {...fade}
+      />
+      {/* Peptide bond His C=O -> Lys N */}
+      <motion.line
+        x1={220} y1={205} x2={250} y2={175} stroke={BOND} strokeWidth={2.4} strokeLinecap="round"
+        initial={false} {...fade}
+      />
+      {/* Copper coordination (dashed): Cu to N-term amine, amide N, imidazole N */}
       <motion.g
-        animate={reduce ? undefined : { rotate: [0, 4, 0, -4, 0] }}
-        transition={reduce ? undefined : { duration: 24, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ originX: '240px', originY: '200px' }}
+        stroke={CU_COL} strokeWidth={1.8} strokeDasharray="4 4" initial={false} {...fade}
       >
-        {/* Bonds fade out as the atoms separate, back in as they reform */}
-        {BONDS.map(([a, b], i) => {
-          const A = ATOMS[a];
-          const B = ATOMS[b];
-          return (
-            <motion.line
-              key={`bond-${i}`}
-              x1={A.x}
-              y1={A.y}
-              x2={B.x}
-              y2={B.y}
-              stroke="#38bdf8"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              initial={false}
-              animate={reduce ? { opacity: 0.55 } : { opacity: [0.55, 0, 0.55] }}
-              transition={
-                reduce
-                  ? undefined
-                  : { duration: 5.5, repeat: Infinity, ease: 'easeInOut', times: [0, 0.5, 1] }
-              }
-            />
-          );
-        })}
+        <line x1={135} y1={150} x2={70} y2={175} />
+        <line x1={135} y1={150} x2={160} y2={205} />
+        <line x1={135} y1={150} x2={168} y2={112} />
+      </motion.g>
 
-        {/* Atoms drift outward and back on a staggered loop */}
-        {ATOMS.map((atom, i) => {
-          const d = drifted(atom.x, atom.y);
-          return (
-            <motion.circle
-              key={`atom-${i}`}
-              r={atom.r}
-              fill={atom.color}
-              filter={atom.glow ? 'url(#mol-glow)' : undefined}
-              initial={false}
-              animate={
-                reduce
-                  ? { cx: atom.x, cy: atom.y }
-                  : { cx: [atom.x, d.x, atom.x], cy: [atom.y, d.y, atom.y] }
-              }
-              transition={
-                reduce
-                  ? undefined
-                  : {
-                      duration: 5.5,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                      delay: i * 0.12,
-                      times: [0, 0.5, 1],
-                    }
-              }
-            />
-          );
-        })}
+      {/* ---- Glycine fragment (drifts up-left) ---- */}
+      <motion.g initial={false} {...drift(-52, -26, 0)}>
+        <Bond x1={70} y1={175} x2={100} y2={205} />
+        <Bond x1={100} y1={205} x2={130} y2={175} />
+        <Bond x1={130} y1={175} x2={130} y2={145} double />
+        <Atom x={62} y={170} label="H₂N" fill={N_COL} />
+        <Atom x={130} y={139} label="O" fill={O_COL} />
+      </motion.g>
+
+      {/* ---- Copper (drifts down-left) ---- */}
+      <motion.g initial={false} {...drift(-44, 34, 0.15)}>
+        <circle cx={135} cy={150} r={13} fill={CU_COL} opacity={0.22} />
+        <Atom x={135} y={150} label="Cu" fill={CU_COL} />
+      </motion.g>
+
+      {/* ---- Histidine fragment (stays ~center) ---- */}
+      <motion.g initial={false} {...drift(4, -6, 0.1)}>
+        <Bond x1={160} y1={205} x2={190} y2={175} />
+        <Bond x1={190} y1={175} x2={220} y2={205} />
+        <Bond x1={220} y1={205} x2={220} y2={237} double />
+        {/* side chain up to imidazole ring */}
+        <Bond x1={190} y1={175} x2={190} y2={148} />
+        <Bond x1={190} y1={148} x2={190} y2={124} />
+        {/* imidazole ring (Cγ, Nδ1, Cε1, Nε2, Cδ2) */}
+        <Bond x1={190} y1={124} x2={168} y2={112} />
+        <Bond x1={168} y1={112} x2={176} y2={86} double />
+        <Bond x1={176} y1={86} x2={204} y2={86} />
+        <Bond x1={204} y1={86} x2={213} y2={112} double />
+        <Bond x1={213} y1={112} x2={190} y2={124} />
+        <Atom x={152} y={208} label="N" fill={N_COL} />
+        <Atom x={220} y={243} label="O" fill={O_COL} />
+        <Atom x={162} y={112} label="N" fill={N_COL} />
+        <Atom x={210} y={86} label="N" fill={N_COL} />
+      </motion.g>
+
+      {/* ---- Lysine fragment (drifts down-right) ---- */}
+      <motion.g initial={false} {...drift(56, 28, 0.05)}>
+        <Bond x1={250} y1={175} x2={280} y2={205} />
+        <Bond x1={280} y1={205} x2={310} y2={175} />
+        <Bond x1={310} y1={175} x2={310} y2={145} double />
+        <Bond x1={310} y1={175} x2={340} y2={205} />
+        {/* lysine side chain: (CH2)4 - NH2 */}
+        <Bond x1={280} y1={205} x2={280} y2={237} />
+        <Bond x1={280} y1={237} x2={306} y2={252} />
+        <Bond x1={306} y1={252} x2={306} y2={282} />
+        <Bond x1={306} y1={282} x2={332} y2={297} />
+        <Bond x1={332} y1={297} x2={332} y2={327} />
+        <Atom x={242} y={172} label="N" fill={N_COL} />
+        <Atom x={310} y={139} label="O" fill={O_COL} />
+        <Atom x={350} y={208} label="OH" fill={O_COL} />
+        <Atom x={340} y={332} label="NH₂" fill={N_COL} />
       </motion.g>
     </svg>
   );
